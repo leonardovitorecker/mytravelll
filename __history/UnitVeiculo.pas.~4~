@@ -1,0 +1,52 @@
+unit UnitVeiculo;
+
+interface
+
+uses
+ System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects,
+  FMX.Layouts, FMX.Controls.Presentation, FMX.Edit, FMX.TabControl,
+  System.Actions, FMX.ActnList, FMX.Ani, FMX.StdCtrls, FMX.Styles.Objects;
+
+type
+  TFormVeiculo = class(TForm)
+    StyleBook1: TStyleBook;
+    LayoutinteiroVeiculoCad: TLayout;
+    LayoutCenterVeiculoCad: TLayout;
+    LayoutNomeVeiculoCad: TLayout;
+    RoundRectNomeVeiculoCad: TRoundRect;
+    EditNomeVeiculoCad: TEdit;
+    LayoutAnoFabricacaoVeiculoCad: TLayout;
+    RoundRectAnoFabricacaoVeiculoCad: TRoundRect;
+    EditAnoFabricacaoVeiculoCad: TEdit;
+    LayoutModeloVeiculoCad: TLayout;
+    RoundRectModeloVeiculoCad: TRoundRect;
+    EditModeloVeiculoCad: TEdit;
+    LayoutMarcaVeiculoCad: TLayout;
+    RoundRectMarcaVeiculoCad: TRoundRect;
+    EditMarcaVeiculoCad: TEdit;
+    LayoutVeiculoCad: TLayout;
+    RoundRectVeiculoCad: TRoundRect;
+    LabelVeiculoCadastrar: TLabel;
+    LayoutLabelCadVeiculo: TLayout;
+    Label2: TLabel;
+    LayoutBarraCadVeiculo: TLayout;
+    LayoutBarra2CadVeiculo: TLayout;
+    ImageHomeCadVeiculo: TImage;
+    ImageMenuCadVeiculo: TImage;
+    ImageMeuVeiculoCad: TImage;
+    ImagePerfilCadVeiculo: TImage;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormVeiculo: TFormVeiculo;
+
+implementation
+
+{$R *.fmx}
+
+end.

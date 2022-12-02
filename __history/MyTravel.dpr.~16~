@@ -1,0 +1,22 @@
+program MyTravel;
+
+uses
+  System.StartUpCopy,
+  FMX.Forms,
+  CadastroUsuario in 'CadastroUsuario.pas' {FormCadastro},
+  DM in 'DM.pas' {DataModul: TDataModule},
+  TelaInicial in 'TelaInicial.pas' {FrmTelaInicial},
+  UnitVeiculo in 'UnitVeiculo.pas' {FormVeiculo},
+  Splash in 'Splash.pas' {Versao},
+  UOpenURL in 'UOpenURL.pas',
+  FrameVeiculo in 'FrameVeiculo.pas' {Form1};
+
+{$R *.res}
+
+begin
+  Application.Initialize;
+  Application.CreateForm(TDataModul, DataModul);
+  Application.CreateForm(TFormCadastro, FormCadastro);
+  Application.CreateForm(TForm1, Form1);
+  Application.Run;
+end.

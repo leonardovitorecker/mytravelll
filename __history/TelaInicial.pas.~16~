@@ -1,0 +1,227 @@
+unit TelaInicial;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects,
+  FMX.Layouts, FMX.Controls.Presentation, FMX.Edit, FMX.TabControl,
+  System.Actions, FMX.ActnList, FMX.Ani, FMX.StdCtrls, FMX.Styles.Objects,
+  REST.Types, REST.Client, Data.Bind.Components, Data.Bind.ObjectScope,
+   System.JSON, System.Sensors, System.Sensors.Components, FMX.Maps;
+
+type
+  TFrmTelaInicial = class(TForm)
+    LayoutTelaInteiraInicial: TLayout;
+    StyleBookTelaInicial: TStyleBook;
+    TabControlTelaInicial: TTabControl;
+    TabItemHome: TTabItem;
+    TabItemPerfilUsuario: TTabItem;
+    ActionListTelaInicial: TActionList;
+    CTabActionHome: TChangeTabAction;
+    CTabActionMeuVeiculo: TChangeTabAction;
+    CTabActionPerfilUsuario: TChangeTabAction;
+    TabItemMeuVeiculo: TTabItem;
+    LayoutCenterInicial: TLayout;
+    LabelMeusVeiculos: TLabel;
+    LayoutLabelMeuVeiculo: TLayout;
+    LayoutMenuBarraMeuVeiculo: TLayout;
+    LayoutCadMeuVeiculo: TLayout;
+    LayoutBarra2MeuVeiculo: TLayout;
+    ImageHomeMeuVeiculo: TImage;
+    ImageMenuMeuVeiculo: TImage;
+    ImageMeusVeiculos: TImage;
+    ImagePerfilMeuVeiculo: TImage;
+    LabelCadNovoVeiculo: TLabel;
+    LayoutTelaInteiraPerfil: TLayout;
+    LayoutLabelPerfil: TLayout;
+    LabelEditarPerfil: TLabel;
+    LayoutCenterEditarPerfil: TLayout;
+    LayoutNomeEditarPerfil: TLayout;
+    RoundRectNomeEditarPerfil: TRoundRect;
+    EditNomeEditarPerfil: TEdit;
+    LayoutTelefoneEditarPerfil: TLayout;
+    RoundRectTelefoneEditarPerfil: TRoundRect;
+    EditTelefoneEditarPerfil: TEdit;
+    LayoutEmailEditarPerfil: TLayout;
+    RoundRectEmailEditarPerfil: TRoundRect;
+    EditEmailEditarPerfil: TEdit;
+    LayoutSalvarEditarPerfil: TLayout;
+    RoundRectSalvarEditarPerfil: TRoundRect;
+    LabelSalvarEditarPerfil: TLabel;
+    LayoutBarraPerfil: TLayout;
+    LayoutBarra2Perfil: TLayout;
+    ImagePerfilHome1: TImage;
+    ImagePerfilMenu: TImage;
+    ImagePerfilVeiculo: TImage;
+    ImagePerfil: TImage;
+    LayoutBarraHome: TLayout;
+    LayoutBarra2Home: TLayout;
+    ImageHome: TImage;
+    ImageHomeMenu: TImage;
+    ImageHomeVeiculo: TImage;
+    ImagePerfilHome: TImage;
+    CTabActionGPS: TChangeTabAction;
+    VertScrollBoxVeiculos: TVertScrollBox;
+    LayoutCenterHome: TLayout;
+    LayoutOrigem: TLayout;
+    RoundRectOrigem: TRoundRect;
+    EditOrigem: TEdit;
+    LayoutDestino: TLayout;
+    RoundRectDestino: TRoundRect;
+    EditDestino: TEdit;
+    LayoutDistancia: TLayout;
+    LabelDistancia: TLabel;
+    LayoutTempo: TLayout;
+    LabelTempo: TLabel;
+    RESTClient1: TRESTClient;
+    RESTResponse1: TRESTResponse;
+    RESTRequest1: TRESTRequest;
+    LayoutCalcularRota: TLayout;
+    SpeedButtonCalcularRota: TSpeedButton;
+    TabItemGPS: TTabItem;
+    LayoutBarraGPS: TLayout;
+    Layout2BarraGPS: TLayout;
+    ImageHomeGPS: TImage;
+    ImageGPS: TImage;
+    ImageVeiculoGPS: TImage;
+    ImagePerfilGPS: TImage;
+    LayoutFundo: TLayout;
+    MapViewGPS: TMapView;
+    SwitcGPS: TSwitch;
+    Label1: TLabel;
+    Label2: TLabel;
+    LocationSensor1: TLocationSensor;
+    procedure RoundRectSalvarEditarPerfilClick(Sender: TObject);
+    procedure ImagePerfilMeuVeiculoClick(Sender: TObject);
+    procedure LabelCadNovoVeiculoClick(Sender: TObject);
+    procedure ImageHomeGPSClick(Sender: TObject);
+    procedure ImagePerfilHome1Click(Sender: TObject);
+    procedure ImageHomeMeuVeiculoClick(Sender: TObject);
+
+
+
+
+  private
+  procedure CarregarListaVeiculos(id: integer; nome: string;
+  idusuario: integer);
+  procedure GetVeiculosBase;
+    { Private declarations }
+  public
+  var
+  idVeiculoGlobal: integer;
+
+    { Public declarations }
+  end;
+
+var
+  FrmTelaInicial: TFrmTelaInicial;
+
+implementation
+
+
+uses DM, CadastroUsuario, UnitVeiculo, FrameVeiculo
+
+ ;
+ {$R *.fmx}
+
+procedure TFrmTelaInicial.ImagePerfilHome1Click(Sender: TObject);
+begin
+CTabActionHome.Execute;
+end;
+
+procedure TFrmTelaInicial.ImageHomeGPSClick(Sender: TObject);
+begin
+
+CTabActionGPS.Execute;
+end;
+
+procedure TFrmTelaInicial.ImageHomeMeuVeiculoClick(Sender: TObject);
+begin
+getVeiculosBase;
+CTabActionMeuVeiculo.Execute;
+end;
+
+procedure TFrmTelaInicial.CarregarListaVeiculos(id: integer; nome: string;
+idusuario: integer);
+var frame: TFrameVeiculos ;
+begin
+frame := TFrameVeiculos.Create(nil);
+frame.Position.Y := 9999999;
+frame.Align := TAlignLayout.Top;
+frame.tag := id;
+idVeiculoGlobal := frame.tag;
+frame.LabelNomeVeiculo.Text := nome;
+frame.ImageEditarVeiculo.tag := id;
+frame.ImageExcluirVeiculo.tag := id;
+
+VertScrollBoxVeiculos.AddObject(frame) ;
+
+
+
+end;
+ procedure TFrmTelaInicial.GetVeiculosBase;
+ begin
+    DataModul.QueryBuscaVeiculo.Close;
+   dataModul.QueryBuscaVeiculo.Open();
+   dataModul.QueryBuscaVeiculo.ParamByName('pID').AsInteger := FormCadastro.IdUsuarioGlobal ;
+
+   while not dataModul.QueryBuscaVeiculo.Eof  do
+    begin
+      CarregarListaVeiculos(dataModul.QueryBuscaVeiculoid.AsInteger,
+      dataModul.QueryBuscaVeiculoNome.AsString,
+      dataModul.QueryBuscaVeiculoidusuario.AsInteger);
+      dataModul.QueryBuscaVeiculo.next;
+    end;
+ end;
+
+
+procedure TFrmTelaInicial.ImagePerfilMeuVeiculoClick(Sender: TObject);
+var
+id: integer;
+begin
+dataModul.QueryBuscaUsuario.Close;
+dataModul.QueryBuscaUsuario.Open();
+dataModul.QueryBuscaUsuario.ParamByName('pID').AsInteger := FormCadastro.IdUsuarioGlobal;
+
+EditNomeEditarPerfil.Text:= dataModul.QueryBuscaUsuarioNome.AsString;
+EditEmailEditarPerfil.Text := dataModul.QueryBuscaUsuarioEmail.AsString;
+EditTelefoneEditarPerfil.Text := dataModul.QueryBuscaUsuarioTelefone.AsString;
+EditEmailEditarPerfil.Enabled:= false;
+CTabActionPerfilUsuario.Execute;
+
+
+end;
+
+
+procedure TFrmTelaInicial.LabelCadNovoVeiculoClick(Sender: TObject);
+begin
+
+      if not Assigned(FormVeiculo) then
+      Application.CreateForm(TFormVeiculo, FormVeiculo);
+     FormVeiculo.show();
+end;
+
+
+
+procedure TFrmTelaInicial.RoundRectSalvarEditarPerfilClick(Sender: TObject);
+begin
+
+dataModul.QueryBuscaUsuario.close;
+dataModul.QueryBuscaUsuario.open;
+dataModul.QueryBuscaUsuario.ParamByName('pID').AsInteger := FormCadastro.IdUsuarioGlobal;
+   dataModul.QueryBuscaUsuario.Edit;
+       dataModul.QueryBuscaUsuarionome.AsString := EditNomeEditarPerfil.Text;
+       dataModul.QueryBuscaUsuariotelefone.AsString := EditTelefoneEditarPerfil.Text;
+      dataModul.QueryBuscaUsuarioemail.AsString := EditEmailEditarPerfil.Text;
+
+      dataModul.QueryBuscaUsuario.Post;
+
+
+      dataModul.connection.CommitRetaining;
+
+end;
+
+
+
+end.

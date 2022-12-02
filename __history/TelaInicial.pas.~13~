@@ -1,0 +1,207 @@
+unit TelaInicial;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects,
+  FMX.Layouts, FMX.Controls.Presentation, FMX.Edit, FMX.TabControl,
+  System.Actions, FMX.ActnList, FMX.Ani, FMX.StdCtrls, FMX.Styles.Objects;
+
+type
+  TFrmTelaInicial = class(TForm)
+    LayoutTelaInteiraInicial: TLayout;
+    StyleBookTelaInicial: TStyleBook;
+    TabControlTelaInicial: TTabControl;
+    TabItemHome: TTabItem;
+    TabItemPerfilUsuario: TTabItem;
+    ActionListTelaInicial: TActionList;
+    CTabActionHome: TChangeTabAction;
+    CTabActionMeuVeiculo: TChangeTabAction;
+    CTabActionPerfilUsuario: TChangeTabAction;
+    TabItemMeuVeiculo: TTabItem;
+    LayoutCenterInicial: TLayout;
+    LabelMeusVeiculos: TLabel;
+    LayoutLabelMeuVeiculo: TLayout;
+    LayoutMenuBarraMeuVeiculo: TLayout;
+    LayoutCadMeuVeiculo: TLayout;
+    LayoutBarra2MeuVeiculo: TLayout;
+    ImageHomeMeuVeiculo: TImage;
+    ImageMenuMeuVeiculo: TImage;
+    ImageMeusVeiculos: TImage;
+    ImagePerfilMeuVeiculo: TImage;
+    LabelCadNovoVeiculo: TLabel;
+    LayoutTelaInteiraPerfil: TLayout;
+    LayoutLabelPerfil: TLayout;
+    LabelEditarPerfil: TLabel;
+    LayoutCenterEditarPerfil: TLayout;
+    LayoutNomeEditarPerfil: TLayout;
+    RoundRectNomeEditarPerfil: TRoundRect;
+    EditNomeEditarPerfil: TEdit;
+    LayoutTelefoneEditarPerfil: TLayout;
+    RoundRectTelefoneEditarPerfil: TRoundRect;
+    EditTelefoneEditarPerfil: TEdit;
+    LayoutEmailEditarPerfil: TLayout;
+    RoundRectEmailEditarPerfil: TRoundRect;
+    EditEmailEditarPerfil: TEdit;
+    LayoutSalvarEditarPerfil: TLayout;
+    RoundRectSalvarEditarPerfil: TRoundRect;
+    LabelSalvarEditarPerfil: TLabel;
+    LayoutBarraPerfil: TLayout;
+    LayoutBarra2Perfil: TLayout;
+    ImagePerfilHome1: TImage;
+    ImagePerfilMenu: TImage;
+    ImagePerfilVeiculo: TImage;
+    ImagePerfil: TImage;
+    LayoutBarraHome: TLayout;
+    LayoutBarra2Home: TLayout;
+    ImageHome: TImage;
+    ImageHomeMenu: TImage;
+    ImageHomeVeiculo: TImage;
+    ImagePerfilHome: TImage;
+    CTabActionMenu: TChangeTabAction;
+    VertScrollBoxVeiculos: TVertScrollBox;
+    procedure RoundRectSalvarEditarPerfilClick(Sender: TObject);
+    procedure ImagePerfilMeuVeiculoClick(Sender: TObject);
+    procedure LabelCadNovoVeiculoClick(Sender: TObject);
+    procedure ImageHomeVeiculoClick(Sender: TObject);
+    procedure ImageHomeMenuClick(Sender: TObject);
+    procedure ImagePerfilHome1Click(Sender: TObject);
+    procedure ImagePerfilVeiculoClick(Sender: TObject);
+    procedure ImagePerfilMenuClick(Sender: TObject);
+    procedure ImageHomeMeuVeiculoClick(Sender: TObject);
+    procedure ImageMenuMeuVeiculoClick(Sender: TObject);
+
+
+  private
+  procedure CarregarListaVeiculos(id: integer; nome: string);
+  procedure GetVeiculosBase;
+    { Private declarations }
+  public
+  var
+  idVeiculoGlobal: integer;
+
+    { Public declarations }
+  end;
+
+var
+  FrmTelaInicial: TFrmTelaInicial;
+
+implementation
+
+{$R *.fmx}
+uses DM, CadastroUsuario, UnitVeiculo, FrameVeiculo;
+
+
+
+
+
+procedure TFrmTelaInicial.ImagePerfilHome1Click(Sender: TObject);
+begin
+CTabActionHome.Execute;
+end;
+
+procedure TFrmTelaInicial.ImageHomeMenuClick(Sender: TObject);
+begin
+CTabActionMenu.Execute;
+end;
+
+procedure TFrmTelaInicial.ImageHomeMeuVeiculoClick(Sender: TObject);
+begin
+CTabActionHome.Execute;
+end;
+procedure TFrmTelaInicial.CarregarListaVeiculos(id: integer; nome: string);
+var frame: TFramVeiculo ;
+begin
+frame := TFramVeiculo.Create(nil);
+frame.Position.Y := 9999999;
+frame.Align := TAlignLayout.Top;
+frame.tag := id;
+idVeiculoGlobal := frame.tag;
+frame.LabelNomeVeiculo.Text := nome;
+frame.ImageEditarVeiculo.tag := id;
+frame.ImageExcluirVeiculo.tag := id;
+
+VertScrollBoxVeiculos.AddObject(frame) ;
+
+end;
+ procedure TFrmTelaInicial.GetVeiculosBase;
+ begin
+   DataModul.QueryBuscaVeiculo.Close;
+   dataModul.QueryBuscaVeiculo.Open();
+   dataModul.QueryBuscaVeiculo.ParamByName('pID').AsInteger := FormCadastro.IdUsuarioGlobal ;
+
+   while not dataModul.QueryVeiculo.Eof  do
+    begin
+      CarregarListaVeiculos(dataModul.QueryBuscaVeiculoid.AsInteger,
+      dataModul.QueryBuscaVeiculoNome.AsString);
+      dataModul.QueryBuscaVeiculo.next;
+    end;
+ end;
+procedure TFrmTelaInicial.ImageHomeVeiculoClick(Sender: TObject);
+begin
+
+CTabActionMeuVeiculo.execute;
+end;
+
+procedure TFrmTelaInicial.ImageMenuMeuVeiculoClick(Sender: TObject);
+begin
+CTabActionMenu.Execute;
+end;
+
+
+
+procedure TFrmTelaInicial.ImagePerfilMenuClick(Sender: TObject);
+begin
+CTabActionMenu.Execute;
+end;
+
+procedure TFrmTelaInicial.ImagePerfilMeuVeiculoClick(Sender: TObject);
+var
+id: integer;
+begin
+dataModul.QueryBuscaUsuario.Close;
+dataModul.QueryBuscaUsuario.Open();
+dataModul.QueryBuscaUsuario.ParamByName('pID').AsInteger := FormCadastro.IdUsuarioGlobal;
+
+EditNomeEditarPerfil.Text:= dataModul.QueryBuscaUsuarioNome.AsString;
+EditEmailEditarPerfil.Text := dataModul.QueryBuscaUsuarioEmail.AsString;
+EditTelefoneEditarPerfil.Text := dataModul.QueryBuscaUsuarioTelefone.AsString;
+EditEmailEditarPerfil.Enabled:= false;
+CTabActionPerfilUsuario.Execute;
+
+
+end;
+
+procedure TFrmTelaInicial.ImagePerfilVeiculoClick(Sender: TObject);
+begin
+CTabActionMeuVeiculo.Execute;
+end;
+
+procedure TFrmTelaInicial.LabelCadNovoVeiculoClick(Sender: TObject);
+begin
+
+      if not Assigned(FormVeiculo) then
+      Application.CreateForm(TFormVeiculo, FormVeiculo);
+     FormVeiculo.show();
+end;
+
+procedure TFrmTelaInicial.RoundRectSalvarEditarPerfilClick(Sender: TObject);
+begin
+
+dataModul.QueryBuscaUsuario.close;
+dataModul.QueryBuscaUsuario.open;
+dataModul.QueryBuscaUsuario.ParamByName('pID').AsInteger := FormCadastro.IdUsuarioGlobal;
+   dataModul.QueryBuscaUsuario.Edit;
+       dataModul.QueryBuscaUsuarionome.AsString := EditNomeEditarPerfil.Text;
+       dataModul.QueryBuscaUsuariotelefone.AsString := EditTelefoneEditarPerfil.Text;
+      dataModul.QueryBuscaUsuarioemail.AsString := EditEmailEditarPerfil.Text;
+
+      dataModul.QueryBuscaUsuario.Post;
+
+
+      dataModul.connection.CommitRetaining;
+
+end;
+
+end.

@@ -1,0 +1,117 @@
+unit UnitVeiculo;
+
+interface
+
+uses
+ System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects,
+  FMX.Layouts, FMX.Controls.Presentation, FMX.Edit, FMX.TabControl,
+  System.Actions, FMX.ActnList, FMX.Ani, FMX.StdCtrls, FMX.Styles.Objects;
+
+type
+  TFormVeiculo = class(TForm)
+    StyleBook1: TStyleBook;
+    LayoutinteiroVeiculoCad: TLayout;
+    LayoutCenterVeiculoCad: TLayout;
+    LayoutNomeVeiculoCad: TLayout;
+    RoundRectNomeVeiculoCad: TRoundRect;
+    EditNomeVeiculoCad: TEdit;
+    LayoutAnoFabricacaoVeiculoCad: TLayout;
+    RoundRectAnoFabricacaoVeiculoCad: TRoundRect;
+    EditAnoFabricacaoVeiculoCad: TEdit;
+    LayoutModeloVeiculoCad: TLayout;
+    RoundRectModeloVeiculoCad: TRoundRect;
+    EditModeloVeiculoCad: TEdit;
+    LayoutMarcaVeiculoCad: TLayout;
+    RoundRectMarcaVeiculoCad: TRoundRect;
+    EditMarcaVeiculoCad: TEdit;
+    LayoutVeiculoCad: TLayout;
+    RoundRectVeiculoCad: TRoundRect;
+    LabelVeiculoCadastrar: TLabel;
+    LayoutLabelCadVeiculo: TLayout;
+    Label2: TLabel;
+    LayoutBarraCadVeiculo: TLayout;
+    LayoutBarra2CadVeiculo: TLayout;
+    ImageHomeCadVeiculo: TImage;
+    ImageMenuCadVeiculo: TImage;
+    ImageMeuVeiculoCad: TImage;
+    ImagePerfilCadVeiculo: TImage;
+    TabControlVeiculo: TTabControl;
+    TabItemVeiculo: TTabItem;
+    ActionListVeiculo: TActionList;
+    CTabActionVeiculo: TChangeTabAction;
+    LayoutCombustivel: TLayout;
+    RoundRectCombustivel: TRoundRect;
+    EditCombustivel: TEdit;
+    LayoutMediaPorLitro: TLayout;
+    RoundRectMediaLitro: TRoundRect;
+    EditMediaLitro: TEdit;
+    procedure RoundRectVeiculoCadClick(Sender: TObject);
+    procedure ImageHomeCadVeiculoClick(Sender: TObject);
+    procedure ImagePerfilCadVeiculoClick(Sender: TObject);
+    procedure ImageMeuVeiculoCadClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormVeiculo: TFormVeiculo;
+
+implementation
+
+uses dm, TelaInicial, CadastroUsuario;
+{$R *.fmx}
+
+procedure TFormVeiculo.ImageHomeCadVeiculoClick(Sender: TObject);
+begin
+   FrmTelaInicial.CTabActionHome.Execute;
+end;
+
+procedure TFormVeiculo.ImageMeuVeiculoCadClick(Sender: TObject);
+begin
+FrmTelaInicial.CTabActionMeuVeiculo.Execute;
+end;
+
+procedure TFormVeiculo.ImagePerfilCadVeiculoClick(Sender: TObject);
+var
+id: integer;
+begin
+
+dataModul.QueryBuscaUsuario.Close;
+dataModul.QueryBuscaUsuario.Open();
+dataModul.QueryBuscaUsuario.ParamByName('pID').AsInteger := FormCadastro.IdUsuarioGlobal;
+
+FrmTelaInicial.EditNomeEditarPerfil.Text:= dataModul.QueryBuscaUsuarioNome.AsString;
+FrmTelaInicial.EditEmailEditarPerfil.Text := dataModul.QueryBuscaUsuarioEmail.AsString;
+FrmTelaInicial.EditTelefoneEditarPerfil.Text := dataModul.QueryBuscaUsuarioTelefone.AsString;
+FrmTelaInicial.EditEmailEditarPerfil.Enabled:= false;
+FrmTelaInicial.CTabActionPerfilUsuario.Execute;
+
+end;
+
+procedure TFormVeiculo.RoundRectVeiculoCadClick(Sender: TObject);
+begin
+
+
+  DataModul.QueryVeiculo.Close;
+  DataModul.QueryVeiculo.Open();
+
+
+      DataModul.QueryVeiculo.Append;
+      DataModul.QueryVeiculoidusuario.AsInteger := FormCadastro.IdUsuarioGlobal;
+      DataModul.QueryVeiculoNome.AsString := EditNomeVeiculoCad.Text;
+      DataModul.QueryVeiculoMarca.AsString := EditMarcaVeiculoCad.Text;
+      DataModul.QueryVeiculoModelo.AsString := EditModeloVeiculoCad.Text;
+      DataModul.QueryVeiculoMediaLitro.AsString := EditMediaLitro.Text;
+      DataModul.QueryVeiculoCombustivel.AsString := EditCombustivel.Text;
+      DataModul.QueryVeiculoanoFabricacao.AsString := EditAnoFabricacaoVeiculoCad.Text;
+      DataModul.QueryVeiculo.Post;
+      DataModul.Connection.CommitRetaining;
+       FormVeiculo.close;
+       FrmTelaInicial.CTabActionMeuVeiculo.execute;
+      end;
+
+
+end.

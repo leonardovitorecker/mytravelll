@@ -1,0 +1,72 @@
+unit UnitVeiculo;
+
+interface
+
+uses
+ System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects,
+  FMX.Layouts, FMX.Controls.Presentation, FMX.Edit, FMX.TabControl,
+  System.Actions, FMX.ActnList, FMX.Ani, FMX.StdCtrls, FMX.Styles.Objects;
+
+type
+  TFormVeiculo = class(TForm)
+    StyleBook1: TStyleBook;
+    LayoutinteiroVeiculoCad: TLayout;
+    LayoutCenterVeiculoCad: TLayout;
+    LayoutNomeVeiculoCad: TLayout;
+    RoundRectNomeVeiculoCad: TRoundRect;
+    EditNomeVeiculoCad: TEdit;
+    LayoutAnoFabricacaoVeiculoCad: TLayout;
+    RoundRectAnoFabricacaoVeiculoCad: TRoundRect;
+    EditAnoFabricacaoVeiculoCad: TEdit;
+    LayoutModeloVeiculoCad: TLayout;
+    RoundRectModeloVeiculoCad: TRoundRect;
+    EditModeloVeiculoCad: TEdit;
+    LayoutMarcaVeiculoCad: TLayout;
+    RoundRectMarcaVeiculoCad: TRoundRect;
+    EditMarcaVeiculoCad: TEdit;
+    LayoutVeiculoCad: TLayout;
+    RoundRectVeiculoCad: TRoundRect;
+    LabelVeiculoCadastrar: TLabel;
+    LayoutLabelCadVeiculo: TLayout;
+    Label2: TLabel;
+    LayoutBarraCadVeiculo: TLayout;
+    LayoutBarra2CadVeiculo: TLayout;
+    ImageHomeCadVeiculo: TImage;
+    ImageMenuCadVeiculo: TImage;
+    ImageMeuVeiculoCad: TImage;
+    ImagePerfilCadVeiculo: TImage;
+    TabControlVeiculo: TTabControl;
+    TabItemVeiculo: TTabItem;
+    ActionListVeiculo: TActionList;
+    CTabActionVeiculo: TChangeTabAction;
+    procedure RoundRectVeiculoCadClick(Sender: TObject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+var
+  FormVeiculo: TFormVeiculo;
+
+implementation
+
+uses dm;
+{$R *.fmx}
+
+procedure TFormVeiculo.RoundRectVeiculoCadClick(Sender: TObject);
+begin
+
+  DataModul.QueryUsuarioCadastro.Close;
+  DataModul.QueryUsuarioCadastro.Open();
+
+      DataModul.QueryVeiculo.Append;
+      DataModul.QueryVeiculoNome.AsString := EditNomeVeiculoCad.Text;
+      DataModul.QueryVeiculoMarca.AsString := EditMarcaVeiculoCad.Text;
+      DataModul.QueryVeiculoModelo.AsString := EditModeloVeiculoCad.Text;
+      DataModul.QueryVeiculoanoFabricacao.AsString := EditAnoFabricacaoVeiculoCad.Text;
+      DataModul.QueryVeiculo.Post;
+      DataModul.Connection.CommitRetaining;
+      end;
+end.
